@@ -1,0 +1,112 @@
+version: '3'
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: api
+    container_name: api
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: api
+      SERVICE_TAGS: dev
+    working_dir: /var/www/api
+    volumes:
+      - ./api:/var/www/api
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - pokeman-network
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    image: app
+    container_name: app
+    working_dir: /var/www/app
+    volumes: 
+      - ./app:/var/www/app
+    ports: 
+      - 4200:4200
+    command: > 
+      bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
+    networks:
+      - pokeman-network
+
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 80:80
+    volumes:
+      - ./api:/var/www/api
+      - ./app:/var/www/app
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - pokeman-network
+    depends_on:
+      - api
+
+  mysql:
+    image: 'mysql/mysql-server:8.0'
+    container_name: mysql
+    ports:
+      - '${FORWARD_DB_PORT:-3306}:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - 'pokeman-mysql:/var/lib/mysql'
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    healthcheck:
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - '-p${DB_PASSWORD}'
+      retries: 3
+      timeout: 5s
+    networks:
+      - pokeman-network
+
+  redis:
+    image: 'redis:alpine'
+    container_name: redis
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
+    volumes:
+      - 'pokeman-redis:/data'
+    networks:
+      - pokeman-network
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      retries: 3
+      timeout: 5s
+
+networks:
+  pokeman-network:
+    driver: bridge
+
+volumes:
+  pokeman-mysql:
+    driver: local
+  pokeman-redis:
+    driver: local
