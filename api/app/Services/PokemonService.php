@@ -2,6 +2,10 @@
 
 namespace App\Services;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
 class PokemonService
 {
     /**
@@ -17,8 +21,39 @@ class PokemonService
     const STORAGE_DISK = 'local';
 
     /**
-     * Directory where csvs are uploaded
+     * Directory where csv are uploaded
      * @var string
      */
-    const UPLOAD_DIR = 'pokemons';
+    const UPLOAD_PATH = 'pokemons';
+
+    /**
+     * Upload CSV
+     */
+    public static function uploadCSV(UploadedFile $csv, ?string $path, ?string $disk) : string
+    {
+        $filename    = Str::random();
+        $uploadPath  = $path ?? self::UPLOAD_PATH;
+        $storageDisk = $disk ?? self::STORAGE_DISK;
+
+        return $csv
+            ->storeAs($uploadPath, $filename, $storageDisk);
+    }
+
+    /**
+     * Remove csv from storage
+     */
+    public static function removeCsv(string $path, ?string $disk) : bool 
+    {
+        $storageDisk = $disk ?? self::STORAGE_DISK;
+        
+        if(!Storage::disk($storageDisk)->exists($path)){
+            return false;
+        }
+
+        Storage::disk($storageDisk)->delete($path);
+
+        return true;
+    }
+
+    
 }

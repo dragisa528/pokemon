@@ -57,7 +57,7 @@ it('can upload a .csv file containing a list of Pokémon and populate database',
 
     // assert the file was not uploaded with original name
     Storage::disk(PokemonService::STORAGE_DISK)
-        ->assertMissing(PokemonService::UPLOAD_DIR . "/pokemon.csv");
+        ->assertMissing(PokemonService::UPLOAD_PATH . "/pokemon.csv");
  
 })->group('pokemon', 'pokemon-import');
 
