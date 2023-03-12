@@ -13,5 +13,16 @@ class Pokemon extends Model
      */
     protected $table = 'pokemons';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'weight',
+        'height'
+    ];
+
     use HasFactory;
 }

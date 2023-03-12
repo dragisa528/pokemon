@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\pokemonUploader;
+use App\Models\Pokemon;
 
 uses(RefreshDatabase::class);
 
@@ -55,7 +56,22 @@ it('can upload a .csv file containing a list of Pokémon and populate database',
  */
 it('can fetch list of pokemon entries from the database', function () 
 {
+    $pokemon = Pokemon::factory()->create([
+        'name'   => fake()->name(),
+        'weight' => 20.2,
+        'height' => 0.1
+    ]);
+
     $response = $this->getJson("/api/pokemons");
     $response->assertOk();
+
+    $content = $response->decodeResponseJson()['data'];
+    expect($content)->toHaveCount(1); 
+    expect($content[0])
+        ->toMatchArray([
+            'name'   => $pokemon->name,
+            'weight' => $pokemon->weight,
+            'height' => $pokemon->height
+        ]);
 
 })->group('pokemon', 'pokemon-index');
