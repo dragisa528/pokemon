@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePokemonRequest;
-use App\Http\Requests\UpdatePokemonRequest;
+use App\Http\Requests\UploadPokemonRequest;
+use App\Http\Resources\PokemonCollection;
 use App\Models\Pokemon;
 
 class PokemonController extends Controller
@@ -13,37 +13,14 @@ class PokemonController extends Controller
      */
     public function index()
     {
-        //
+        $pokemans = Pokemon::paginate();
+        return new PokemonCollection($pokemans);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Import resources from a csv.
      */
-    public function store(StorePokemonRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Pokemon $pokemon)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePokemonRequest $request, Pokemon $pokemon)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pokemon $pokemon)
+    public function import(UploadPokemonRequest $request)
     {
         //
     }
