@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\PokemonService;
 
 class UploadPokemonRequest extends FormRequest
 {
@@ -22,7 +23,20 @@ class UploadPokemonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pokemons' => 'required|mimes:csv,txt|max:'
+            'pokemons' => 'required|mimes:csv,txt|max:' . PokemonService::MAX_SIZE
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+
+        return [
+            'pokemons.max' => 'File size should not exceed ' . PokemonService::MAX_SIZE . ' KB',
         ];
     }
 }
