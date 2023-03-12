@@ -40,7 +40,7 @@ it('can upload a .csv file containing a list of Pokémon and populate database',
     $csvFile = UploadedFile::fake()
         ->createWithContent('pokemon.csv', $csv);
 
-    $response = $this->postJson('/api/pokemons/upload',[
+    $response = $this->postJson('/api/pokemons/import',[
         'pokemon' => $csvFile
     ]);
 
