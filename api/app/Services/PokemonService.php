@@ -55,5 +55,7 @@ class PokemonService
         return true;
     }
 
-    
+    public static function import(UploadedFile $csv) {
+
+    }
 }
