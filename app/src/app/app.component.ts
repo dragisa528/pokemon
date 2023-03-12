@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Upload a list of Pokeman (CSV)';
+  title = 'Upload a list of Pokemons (CSV)';
 }

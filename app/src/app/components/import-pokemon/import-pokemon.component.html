@@ -1,0 +1,57 @@
+<div class="input-group input-group-lg">
+    <input 
+      (change)="selectFile($event)" 
+      type="file"
+      class="form-control form-control-lg"  
+      placeholder="Upload a CSV list of Pokemon"
+      aria-label="Upload"
+    >
+    <button 
+      (click)="import()"
+      [disabled]="!selectedFiles"
+      class="btn btn-success" 
+      type="button"
+    >
+      Upload
+    </button>
+  </div>
+    
+  <div *ngIf="currentFile" class="progress my-3">
+    <div
+      class="progress-bar progress-bar-info"
+      role="progressbar"
+      attr.aria-valuenow="{{ progress }}"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [ngStyle]="{ width: progress + '%' }"
+    >
+      {{ progress }}%
+    </div>
+  </div>
+    
+  <div *ngIf="message" class="alert alert-danger mt-3" role="alert">
+    {{ message }}
+  </div>
+  
+  <div class="card mt-5">
+    <table *ngIf="pokemons" class="table mb-0">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Weight</th>
+          <th scope="col">Height</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pokemon of pokemons | async">
+          <td>{{ pokemon.name }}</td>
+          <td>
+            <span class="badge bg-primary rounded-pill">{{ pokemon.weight }}</span>
+          </td>
+          <td>
+            <span class="badge bg-info rounded-pill">{{ pokemon.height }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>    
+  </div>
