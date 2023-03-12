@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePokemanRequest;
-use App\Http\Requests\UpdatePokemanRequest;
-use App\Models\Pokeman;
+use App\Http\Requests\StorePokemonRequest;
+use App\Http\Requests\UpdatePokemonRequest;
+use App\Models\Pokemon;
 
-class PokemanController extends Controller
+class PokemonController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class PokemanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePokemanRequest $request)
+    public function store(StorePokemonRequest $request)
     {
         //
     }
@@ -27,7 +27,7 @@ class PokemanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pokeman $pokeman)
+    public function show(Pokemon $pokemon)
     {
         //
     }
@@ -35,7 +35,7 @@ class PokemanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePokemanRequest $request, Pokeman $pokeman)
+    public function update(UpdatePokemonRequest $request, Pokemon $pokemon)
     {
         //
     }
@@ -43,7 +43,7 @@ class PokemanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pokeman $pokeman)
+    public function destroy(Pokemon $pokemon)
     {
         //
     }

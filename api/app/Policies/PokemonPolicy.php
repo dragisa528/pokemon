@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Pokeman;
+use App\Models\Pokemon;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -19,7 +19,7 @@ class PokemonPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Pokeman $pokeman): bool
+    public function view(User $user, Pokemon $pokemon): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class PokemonPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Pokeman $pokeman): bool
+    public function update(User $user, Pokemon $pokemon): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class PokemonPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Pokeman $pokeman): bool
+    public function delete(User $user, Pokemon $pokemon): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class PokemonPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Pokeman $pokeman): bool
+    public function restore(User $user, Pokemon $pokemon): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class PokemonPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Pokeman $pokeman): bool
+    public function forceDelete(User $user, Pokemon $pokemon): bool
     {
         //
     }

@@ -19,7 +19,7 @@ services:
       - mysql
       - redis
     networks:
-      - pokeman-network
+      - pokemon-network
 
   app:
     build:
@@ -35,7 +35,7 @@ services:
     command: > 
       bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
     networks:
-      - pokeman-network
+      - pokemon-network
 
   nginx:
     container_name: nginx
@@ -54,7 +54,7 @@ services:
         max-size: "10m"
         max-file: "3"
     networks:
-      - pokeman-network
+      - pokemon-network
     depends_on:
       - api
 
@@ -71,7 +71,7 @@ services:
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
-      - 'pokeman-mysql:/var/lib/mysql'
+      - 'pokemon-mysql:/var/lib/mysql'
       - ./mysql/my.cnf:/etc/mysql/my.cnf
     healthcheck:
       test:
@@ -82,7 +82,7 @@ services:
       retries: 3
       timeout: 5s
     networks:
-      - pokeman-network
+      - pokemon-network
 
   redis:
     image: 'redis:alpine'
@@ -90,9 +90,9 @@ services:
     ports:
       - '${FORWARD_REDIS_PORT:-6379}:6379'
     volumes:
-      - 'pokeman-redis:/data'
+      - 'pokemon-redis:/data'
     networks:
-      - pokeman-network
+      - pokemon-network
     healthcheck:
       test:
         - CMD
@@ -102,11 +102,11 @@ services:
       timeout: 5s
 
 networks:
-  pokeman-network:
+  pokemon-network:
     driver: bridge
 
 volumes:
-  pokeman-mysql:
+  pokemon-mysql:
     driver: local
-  pokeman-redis:
+  pokemon-redis:
     driver: local
