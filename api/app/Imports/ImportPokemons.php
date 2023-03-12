@@ -16,11 +16,19 @@ class ImportPokemons implements ToModel, WithHeadingRow, WithBatchInserts, WithC
 
     public function model(array $row)
     {
-        return new Pokemon([
+        $pokemon = [
             'name'   => $row['name'],
             'weight' => $row['weight'],
             'height' => $row['height'],
-        ]);
+        ];
+
+        // avoid duplicates
+        $count = Pokemon::where($pokemon)->count();
+        if($count){
+            return null;
+        }
+
+        return new Pokemon($pokemon);
     }
 
     public function batchSize(): int
@@ -37,7 +45,7 @@ class ImportPokemons implements ToModel, WithHeadingRow, WithBatchInserts, WithC
     {
         $name   = 'required|string';
         $weight = 'required|numeric|min:1';
-        $height = 'required|numeric|max:1';
+        $height = 'required|numeric|min:1';
         
         return [
             'name'     => $name,
