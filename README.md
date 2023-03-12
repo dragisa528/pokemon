@@ -1,0 +1,3 @@
+- Specify user in the dockerfile, to for security purpose
+- I used node 18 because its the latest stable version.
+- Add angulr cli to package.jon
