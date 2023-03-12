@@ -17,7 +17,9 @@ class PokemonFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name'   => fake()->name(),
+            'weight' => fake()->randomNumber(),
+            'height' => fake()->randomNumber()
         ];
     }
 }

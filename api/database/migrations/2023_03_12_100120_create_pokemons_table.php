@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //@todo fix column to accept floats example 0.01
         Schema::create('pokemons', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->float('weight');
-            $table->float('height');
+            $table->integer('weight');
+            $table->integer('height');
             $table->timestamps();
         });
     }
