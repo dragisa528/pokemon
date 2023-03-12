@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UploadPokemonRequest;
 use App\Http\Resources\PokemonCollection;
+use App\Services\PokemonService;
 use App\Models\Pokemon;
+
+use Exception;
+use Illuminate\Validation\ValidationException;
 
 class PokemonController extends Controller
 {
@@ -22,6 +26,7 @@ class PokemonController extends Controller
      */
     public function import(UploadPokemonRequest $request)
     {
-        //
+        PokemonService::import($request->pokemons);
+        return response()->noContent();
     }
 }

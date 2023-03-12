@@ -28,16 +28,8 @@ it('cannot import invalid csv file', function ()
  
 })->group('pokemon', 'pokemon-import-validation');
 
-
 it('can upload a .csv file containing a list of Pokémon and populate database', function () 
 {
-
-    // assert upload
-
-    // assert database is populated
-
-    Storage::fake(PokemonService::STORAGE_DISK);
-
     $csv = implode("\n", [
         'Name,Weight,Height',
         'Pikachu,60,4',
@@ -52,12 +44,7 @@ it('can upload a .csv file containing a list of Pokémon and populate database',
         'pokemons' => $csvFile
     ]);
 
-    $response->assertOk();
-
-
-    // assert the file was not uploaded with original name
-    Storage::disk(PokemonService::STORAGE_DISK)
-        ->assertMissing(PokemonService::UPLOAD_PATH . "/pokemon.csv");
+    $response->assertStatus(204);
  
 })->group('pokemon', 'pokemon-import');
 

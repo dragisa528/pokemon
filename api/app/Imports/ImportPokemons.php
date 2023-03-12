@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use App\Models\Pokemon;
 
-class ImportPokemons implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading //, WithValidation
+class ImportPokemons implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, WithValidation
 {
     use Importable;
 
@@ -33,19 +33,19 @@ class ImportPokemons implements ToModel, WithHeadingRow, WithBatchInserts, WithC
         return 500;
     }
 
-    // public function rules(): array
-    // {
-    //     $name   = 'required|string';
-    //     $weight = 'required|numeric|min:1';
-    //     $height = 'required|numeric|min:1';
+    public function rules(): array
+    {
+        $name   = 'required|string';
+        $weight = 'required|numeric|min:1';
+        $height = 'required|numeric|max:1';
         
-    //     return [
-    //         'name'     => $name,
-    //         '*.name'   => $name,
-    //         'weight'   => $weight,
-    //         '*.weight' => $weight,
-    //         'height'   => $height,
-    //         '*.height' => $height
-    //     ];
-    // }
+        return [
+            'name'     => $name,
+            '*.name'   => $name,
+            'weight'   => $weight,
+            '*.weight' => $weight,
+            'height'   => $height,
+            '*.height' => $height
+        ];
+    }
 }
