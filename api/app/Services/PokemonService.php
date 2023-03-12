@@ -5,6 +5,8 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Imports\ImportPokemons;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class PokemonService
 {
@@ -27,35 +29,25 @@ class PokemonService
     const UPLOAD_PATH = 'pokemons';
 
     /**
-     * Upload CSV
+     * Import CSV from uploaded file
      */
-    public static function uploadCSV(UploadedFile $csv, ?string $path, ?string $disk) : string
+    public static function import(UploadedFile $csv) 
     {
-        $filename    = Str::random();
-        $uploadPath  = $path ?? self::UPLOAD_PATH;
-        $storageDisk = $disk ?? self::STORAGE_DISK;
-
-        return $csv
-            ->storeAs($uploadPath, $filename, $storageDisk);
-    }
-
-    /**
-     * Remove csv from storage
-     */
-    public static function removeCsv(string $path, ?string $disk) : bool 
-    {
-        $storageDisk = $disk ?? self::STORAGE_DISK;
-        
-        if(!Storage::disk($storageDisk)->exists($path)){
-            return false;
+        try {
+            return (new ImportPokemons)->import($csv);
+        } catch (ValidationException $e) {
+             
+            $failures = $e->failures();
+            dd($failures);
+            // foreach ($failures as $index => $failure) 
+            // {
+            //     $error = [
+            //         'row'       => $failure->row(),
+            //         'attribute' => $failure->attribute(),
+            //         'errors'    => $failure->errors(),
+            //         'values'    =>$failure->values() 
+            //     ];
+            // }
         }
-
-        Storage::disk($storageDisk)->delete($path);
-
-        return true;
-    }
-
-    public static function import(UploadedFile $csv) {
-
     }
 }
