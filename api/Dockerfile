@@ -1,10 +1,10 @@
 FROM php:8.2-fpm
 
 # Copy composer.lock and composer.json
-COPY composer.lock composer.json /var/www/
+COPY composer.lock composer.json /var/www/api/
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/api
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -35,20 +35,20 @@ RUN docker-php-ext-install gd
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Copy existing application directory contents to the working directory
-COPY . /var/www
+COPY . /var/www/api
 
 # Copy supervisor it's path in the working directory
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Assign permissions of the working directory to the www-data user
 RUN chown -R www-data:www-data \
-        /var/www/storage \
-        /var/www/bootstrap/cache
+        /var/www/api/storage \
+        /var/www/api/bootstrap/cache
 
 # Assign writing permissions to logs and framework directories
 RUN chmod 775 storage/logs \
-        /var/www/storage/framework/sessions \
-        /var/www/storage/framework/views
+        /var/www/api/storage/framework/sessions \
+        /var/www/api/storage/framework/views
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

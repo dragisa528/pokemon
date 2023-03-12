@@ -1,9 +1,9 @@
 FROM node:18
 
 # Create working directory
-RUN mkdir -p /var/www
+RUN mkdir -p /var/www/app
  
-WORKDIR /var/www
+WORKDIR /var/www/app
 
 RUN npm install -g @angular/cli
 
