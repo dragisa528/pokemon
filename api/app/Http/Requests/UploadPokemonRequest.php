@@ -22,7 +22,7 @@ class UploadPokemonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'pokemons' => 'required|mimes:csv,txt|max:'
         ];
     }
 }
