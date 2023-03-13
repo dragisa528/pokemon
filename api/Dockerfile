@@ -44,7 +44,7 @@ RUN groupadd -g 1000 apigroup
 RUN useradd -u 1000 api
 
 # And the newly created api user to new group created above (www)
-RUN usermod -a -G apigroup 1000
+RUN usermod -a -G 1000 api
 
 # We also add the api (GID) to a group called www-data
 RUN usermod -a -G www-data 1000 
