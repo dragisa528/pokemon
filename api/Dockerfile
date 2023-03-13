@@ -38,7 +38,7 @@ RUN docker-php-ext-install gd
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Create a new group called www with the group ID(GID) argument
-RUN groupadd -g $WWWGROUP www
+RUN groupadd www -g $WWWGROUP
 
 # Create a user called api with user ID (UID) argument 
 RUN useradd -u $WWWUSER api
