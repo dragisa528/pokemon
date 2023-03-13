@@ -1,5 +1,8 @@
 FROM php:8.2-fpm
 
+ARG WWWGROUP
+ARG WWWUSER
+
 # Copy composer.lock and composer.json
 COPY composer.lock composer.json /var/www/api/
 
@@ -40,15 +43,11 @@ COPY . /var/www/api
 # Copy supervisor it's path in the working directory
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Assign permissions of the working directory to the www-data user
-RUN chown -R www-data:www-data \
-        /var/www/api/storage \
-        /var/www/api/bootstrap/cache
+RUN groupmod -g $WWWGROUP www-data \
+    && usermod -u $WWWUSER www-data
 
-# Assign writing permissions to logs and framework directories
-RUN chmod 775 storage/logs \
-        /var/www/api/storage/framework/sessions \
-        /var/www/api/storage/framework/views
+RUN chown -R www-data:www-data /var/www/api
+RUN chmod 775 /var/www/api/storage
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
