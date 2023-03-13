@@ -80,4 +80,5 @@ POST     api/pokemons/import ...................... pokemons.import › PokemonC
 NB: Frontend development enviroment is accessible on http://localhost:4200/
 
 # Screenshots
-![screenshot](https://user-images.githubusercontent.com/2041419/224701664-0060e8be-cc43-4784-b15b-04121d44e3e3.jpeg)
+![screenshot](https://user-images.githubusercontent.com/2041419/224702533-e24d2445-4573-4f65-aca9-1ae4d09629b4.jpeg)
+
