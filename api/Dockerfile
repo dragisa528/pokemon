@@ -45,7 +45,7 @@ RUN useradd -u $WWWUSER -ms /bin/bash -g api api
 COPY . /var/www/api
 
 # Copy existing application directory permissions
-COPY --chown=www:www . /var/www/api
+COPY --chown=api:api . /var/www/api
 
 # Change current user to api
 USER api
