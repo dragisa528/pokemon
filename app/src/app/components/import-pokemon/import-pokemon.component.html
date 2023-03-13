@@ -29,12 +29,28 @@
     </div>
   </div>
     
-  <div *ngIf="message" class="alert alert-danger mt-3" role="alert">
+  <div 
+    [ngClass]="{'alert-success' : success === true, 'alert-danger' : success === false}"
+    *ngIf="message" 
+    class="alert mt-3"  
+    role="alert">
     {{ message }}
   </div>
   
-  <div class="card mt-5">
-    <table *ngIf="pokemons" class="table mb-0">
+  <div class="row mt-3">
+    <div class="col-4">
+        <button (click)="refresh()" type="button" class="btn btn-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"></path>
+                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"></path>
+            </svg>
+            Refresh
+          </button>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <table *ngIf="pokemons && pokemons.meta.total" class="table mb-0">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -43,7 +59,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let pokemon of pokemons | async">
+        <tr *ngFor="let pokemon of pokemons.data">
           <td>{{ pokemon.name }}</td>
           <td>
             <span class="badge bg-primary rounded-pill">{{ pokemon.weight }}</span>
@@ -54,4 +70,26 @@
         </tr>
       </tbody>
     </table>    
+  </div>
+
+  <div *ngIf="pokemons && (pokemons.links.prev || pokemons.links.next)" class="row mt-3">
+    <div class="col-12">
+      <nav aria-label="Page navigation" class="float-start">
+        <ul class="pagination"> 
+          <li class="page-item" [ngClass]="{'disabled' : pokemons.links.prev === null}">
+            <a  href="javascript:void(0);" (click)="previous()" class="page-link">Previous</a>
+          </li>
+  
+          <li class="page-item" [ngClass]="{'disabled' : pokemons.links.next === null}">
+            <a href="javascript:void(0);" (click)="next()" class="page-link">Next</a>
+          </li>
+        </ul>
+      </nav>
+  
+      <nav aria-label="Page navigation" class="float-end">
+        <ul class="pagination"> 
+          <span class="badge bg-primary p-3">{{ pokemons.meta.total}}</span>
+        </ul>
+      </nav>
+    </div>
   </div>

@@ -13,6 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Pokemon::factory(5)->create();
+        Pokemon::factory(1)->create();
     }
 }

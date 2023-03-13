@@ -14,7 +14,6 @@ use App\Http\Controllers\PokemonController;
 |
 */
 
-
 Route::controller(PokemonController::class)
 ->prefix('pokemons')
 ->name('pokemons.')

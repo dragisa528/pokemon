@@ -56,4 +56,17 @@ class ImportPokemons implements ToModel, WithHeadingRow, WithBatchInserts, WithC
             '*.height' => $height
         ];
     }
+
+    public function customValidationMessages()
+    {
+        return [
+            '*.weight.min'      => 'The weight entered at row #:position should be greater than zero',
+            '*.height.min'      => 'The height entered at row #:position should be greater than zero',
+            '*.weight.numeric'  => 'The weight entered at row #:position should be numeric',
+            '*.height.numeric'  => 'The height entered at row #:position should be numeric',
+            '*.name.required'   => 'The name at row #:position is required',
+            '*.weight.required' => 'The weight at row #:position is required',
+            '*.height.required' => 'The height at row #:position is required',
+        ];
+    }
 }

@@ -38,7 +38,8 @@ export class ImportPokemonService
    * 
    * @returns 
    */
-  pokemons(): Observable<any> {
-    return this.http.get(`${this.baseUrl}`);
+  getPokemons(url?:string): Observable<any> {
+    url = url ?? this.baseUrl;
+    return this.http.get(url);
   }
 }

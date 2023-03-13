@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use App\Services\PokemonService;
+use App\Helpers\FakeCsvHelper;
 use App\Models\Pokemon;
 
 uses(RefreshDatabase::class);
@@ -13,10 +11,11 @@ uses(RefreshDatabase::class);
  */
 it('cannot import invalid csv file', function () 
 {
-    $response = $this->postJson('/api/pokemons/import',[
-        'pokemon' => 'null'
-    ]);
 
+    // assert cannot import invalid file
+    $response = $this->postJson('/api/pokemons/import',[
+        'pokemons' => ''
+    ]);
     $response->assertStatus(422);
     $errors = $response->decodeResponseJson()['errors'];
     expect($errors)
@@ -25,26 +24,43 @@ it('cannot import invalid csv file', function ()
             0 => "The pokemons field is required."
         ]
     ]);
+
+    // assert validation fails for invalid column
+    $rows = [
+        'head' => ['Name', 'Weight', 'Height'],
+        'row1' => ['name' => 'Pikachu',   'weight' => 'badddooo value',  'height' => 4]
+    ];
+    $csvFile  = FakeCsvHelper::fromRows('pokemon.csv', $rows);
+
+    $response = $this->postJson('/api/pokemons/import', ['pokemons' => $csvFile]);
+    $response->assertStatus(422);
+    $errors = $response->decodeResponseJson()['errors'];
+
+    expect($errors)
+    ->toMatchArray([
+        "2.weight" => [
+            0 => "The weight entered at row #3 should be numeric"
+        ]
+    ]);
  
 })->group('pokemon', 'pokemon-import-validation');
 
 it('can upload a .csv file containing a list of Pokémon and populate database', function () 
 {
-    $csv = implode("\n", [
-        'Name,Weight,Height',
-        'Pikachu,60,4',
-        'Blastoise,855,16',
-        'Squirtle,90,5'
-    ]);
+    $rows = [
+        'head' => ['Name', 'Weight', 'Height'],
+        'row1' => ['name' => 'Pikachu',   'weight' => 60,  'height' => 4],
+        'row2' => ['name' => 'Blastoise', 'weight' => 855, 'height' => 16],
+        'row3' => ['name' => 'Emeka',     'weight' => 90,  'height' => 5]
+    ];
 
-    $csvFile = UploadedFile::fake()
-        ->createWithContent('pokemon.csv', $csv);
-
-    $response = $this->postJson('/api/pokemons/import',[
-        'pokemons' => $csvFile
-    ]);
-
+    $csvFile  = FakeCsvHelper::fromRows('pokemon.csv', $rows);
+    $response = $this->postJson('/api/pokemons/import',['pokemons' => $csvFile]);
     $response->assertStatus(204);
+
+    $this->assertDatabaseHas('pokemons', ['name' => 'Pikachu',   'weight' => 60,  'height' => 4]);
+    $this->assertDatabaseHas('pokemons', ['name' => 'Blastoise', 'weight' => 855, 'height' => 16]);
+    $this->assertDatabaseHas('pokemons', ['name' => 'Emeka',     'weight' => 90,  'height' => 5]);
  
 })->group('pokemon', 'pokemon-import');
 
@@ -53,11 +69,7 @@ it('can upload a .csv file containing a list of Pokémon and populate database',
  */
 it('can fetch list of pokemon entries from the database', function () 
 {
-    $pokemon = Pokemon::factory()->create([
-        'name'   => fake()->name(),
-        'weight' => 20.2,
-        'height' => 0.1
-    ]);
+    $pokemon = Pokemon::factory()->create(['name' => 'Emeka',   'weight' => 20,  'height' => 0.4]);
 
     $response = $this->getJson("/api/pokemons");
     $response->assertOk();
