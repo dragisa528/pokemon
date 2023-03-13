@@ -1,5 +1,8 @@
 FROM php:8.2-fpm
 
+# Copy composer.lock and composer.json
+COPY composer.lock composer.json /var/www/api/
+
 # Set working directory
 WORKDIR /var/www/api
 
@@ -30,6 +33,9 @@ RUN docker-php-ext-install gd
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Copy existing application directory contents to the working directory
+COPY . /var/www/api
 
 # Copy supervisor it's path in the working directory
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
