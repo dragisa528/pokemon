@@ -38,19 +38,25 @@ RUN docker-php-ext-install gd
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Add user for laravel application
-RUN groupadd -g $WWWGROUP api
-RUN useradd -u $WWWUSER -ms /bin/bash -g api api
+RUN groupadd -g $WWWGROUP www
+RUN useradd -u $WWWUSER -ms /bin/bash -g www www
 
-RUN usermod -a -G www-data api
-
-# Copy existing application directory contents
-COPY . /var/www/api
+RUN usermod -a -G www-data www
 
 # Copy existing application directory permissions
 COPY --chown=www-data:www-data . /var/www/api
 
+RUN chown -R www-data:www-data \
+        /var/www/api/storage \
+        /var/www/api/bootstrap/cache
+
+# Assign writing permissions to logs and framework directories
+RUN chmod 775 /var/www/api/storage/logs \
+        /var/www/api/storage/framework/sessions \
+        /var/www/api/storage/framework/views
+
 # Change current user to api
-USER api
+USER www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
