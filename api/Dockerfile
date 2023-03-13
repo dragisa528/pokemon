@@ -41,8 +41,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN groupadd -g $WWWGROUP www
 
 # Create a user called api with user ID (UID) argument 
-# And also add the newly created api user to new group created above (www)
-RUN useradd -u $WWWUSER api -g www
+RUN useradd -u $WWWUSER api
+
+# And the newly created api user to new group created above (www)
+RUN usermod -a -G www $WWWUSER 
 
 # We also add the api (GID) to a group called www-data
 RUN usermod -a -G www-data $WWWUSER 
