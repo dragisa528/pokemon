@@ -47,12 +47,12 @@ RUN useradd -u 1000 api
 RUN usermod -a -G 1000 api
 
 # We also add the api (GID) to a group called www-data
-RUN usermod -a -G www-data 1000 
+# RUN usermod -a -G www-data 1000 
 
 # Copy existing application directory permissions
 COPY . /var/www/api
 
-RUN chown -R www-data:www-data \
+RUN chown -R apigroup:apigroup \
         /var/www/api/storage \
         /var/www/api/bootstrap/cache
 
