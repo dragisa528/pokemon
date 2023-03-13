@@ -5,8 +5,8 @@ services:
       context: ./api
       dockerfile: Dockerfile
       args:
-        - WWWUSER=${WWWUSER:-1000}
-        - WWWGROUP=${WWWGROUP:-1000}
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
     image: api
     container_name: api
     restart: unless-stopped
