@@ -4,6 +4,9 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
+      args:
+        - WWWUSER=${WWWUSER:-1000}
+        - WWWGROUP=${WWWGROUP:-1000}
     image: api
     container_name: api
     restart: unless-stopped
@@ -25,9 +28,6 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile
-      args:
-        - WWWUSER=${WWWUSER:-1000}
-        - WWWGROUP=${WWWGROUP:-1000}
     image: app
     container_name: app
     working_dir: /var/www/app
