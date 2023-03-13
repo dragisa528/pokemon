@@ -81,4 +81,5 @@ NB: Frontend development enviroment is accessible on http://localhost:4200/
 
 # Screenshots
 ![screenshot](https://user-images.githubusercontent.com/2041419/224702533-e24d2445-4573-4f65-aca9-1ae4d09629b4.jpeg)
+![screenshot1](https://user-images.githubusercontent.com/2041419/224742219-0a36829d-5337-48cd-9fa9-2b8d1029f2b1.jpeg)
 
