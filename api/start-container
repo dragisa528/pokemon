@@ -11,4 +11,4 @@ else
 	echo "chown www-data:www-data /var/www/api/storage /var/www/api/boostrap/cache"
 fi
 
-service php8.2-fpm restart
+service php8.2-fpm start
