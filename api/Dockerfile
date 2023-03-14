@@ -1,10 +1,10 @@
 FROM php:8.2-fpm
 
-# ARG USER
-# ARG UID
+ARG UID
+RUN echo $UID;
 
 # Set working directory
-# WORKDIR /var/www/api
+WORKDIR /var/www/api
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -31,29 +31,22 @@ RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 
-# Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# COPY composer.lock composer.json /var/www/api/
-# COPY . /var/www/api
-
-# RUN chown -R :www-data \
-#         /var/www/api/storage \
-#         /var/www/api/bootstrap/cache
-
-# # Assign writing permissions to logs and framework directories
-# RUN chmod -R 775 /var/www/api/storage \
-#          /var/www/api/bootstrap/cache
-
-# Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u 1000 -d /home/embah embah
-RUN mkdir -p /home/embah/.composer && \
-    chown -R embah:embah /home/embah
-
 # Set working directory
 WORKDIR /var/www/api
 
-USER embah
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+COPY composer.lock composer.json /var/www/api/
+COPY . /var/www/api
+
+RUN chown -R :www-data \
+        /var/www/api/storage \
+        /var/www/api/bootstrap/cache
+
+# Assign writing permissions to logs and framework directories
+RUN chmod -R 775 /var/www/api/storage \
+         /var/www/api/bootstrap/cache
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
