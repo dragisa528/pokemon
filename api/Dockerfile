@@ -1,10 +1,10 @@
 FROM php:8.2-fpm
 
-ARG WWWGROUP
-ARG WWWUSER
+ARG USER
+ARG UID
 
 # Set working directory
-WORKDIR /var/www/api
+# WORKDIR /var/www/api
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -37,14 +37,25 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # COPY composer.lock composer.json /var/www/api/
 # COPY . /var/www/api
 
-RUN chown -R :www-data \
-        /var/www/api/storage \
-        /var/www/api/bootstrap/cache
+# RUN chown -R :www-data \
+#         /var/www/api/storage \
+#         /var/www/api/bootstrap/cache
 
-# Assign writing permissions to logs and framework directories
-RUN chmod -R 775 /var/www/api/storage \
-         /var/www/api/bootstrap/cache
+# # Assign writing permissions to logs and framework directories
+# RUN chmod -R 775 /var/www/api/storage \
+#          /var/www/api/bootstrap/cache
+
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u $UID -d /home/$USER $USER
+RUN mkdir -p /home/$USER/.composer && \
+    chown -R $USER:$USER /home/$USER
+
+# Set working directory
+WORKDIR /var/www/api
+
+USER $USER
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
+
 CMD ["php-fpm"]
