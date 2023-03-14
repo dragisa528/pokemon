@@ -1,9 +1,8 @@
 FROM php:8.2-fpm
 
-ARG UID
-RUN echo $UID;
+ARG WWWGROUP
 
-# Set working directory
+# set working directory
 WORKDIR /var/www/api
 
 # Install dependencies
@@ -31,20 +30,17 @@ RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 
-# Set working directory
-WORKDIR /var/www/api
-
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN groupadd --force -g ${WWWGROUP} api
+RUN useradd -ms /bin/bash --no-user-group -g ${WWWGROUP} -u 1337 api
 
 COPY composer.lock composer.json /var/www/api/
 COPY . /var/www/api
 
-RUN chown -R www-data:www-data /var/www/api/storage
-RUN chown -R www-data:www-data /var/www/api/bootstrap/cache
-
-RUN chmod -R 777 /var/www/api/storage
-RUN chmod -R 777 /var/www/api/bootstrap/cache
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
