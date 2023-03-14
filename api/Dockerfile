@@ -34,6 +34,8 @@ RUN docker-php-ext-install gd
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+USER wwwdata
+
 COPY composer.lock composer.json /var/www/api/
 COPY . /var/www/api
 
@@ -45,9 +47,6 @@ RUN chown -R www-data:www-data \
 RUN chmod 777 /var/www/api/storage/logs \
         /var/www/api/storage/framework/sessions \
         /var/www/api/storage/framework/views
-
-# Change current user to api
-# USER www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
