@@ -1,7 +1,7 @@
 FROM php:8.2-fpm
 
-ARG USER
-ARG UID
+# ARG USER
+# ARG UID
 
 # Set working directory
 # WORKDIR /var/www/api
@@ -46,14 +46,14 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 #          /var/www/api/bootstrap/cache
 
 # Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $UID -d /home/$USER $USER
-RUN mkdir -p /home/$USER/.composer && \
-    chown -R $USER:$USER /home/$USER
+RUN useradd -G www-data,root -u 1000 -d /home/embah embah
+RUN mkdir -p /home/embah/.composer && \
+    chown -R embah:embah /home/embah
 
 # Set working directory
 WORKDIR /var/www/api
 
-USER $USER
+USER embah
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

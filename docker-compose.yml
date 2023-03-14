@@ -4,9 +4,9 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
-      args:
-        - USER:embah
-        - UID:1000
+      # args:
+      #   - USER:embah
+      #   - UID:1000
     image: api
     container_name: api
     restart: unless-stopped
