@@ -45,6 +45,4 @@ RUN chmod +x /usr/local/bin/start-container
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 
-ENTRYPOINT ["start-container"]
-
-# CMD ["php-fpm"]
+CMD ["php-fpm"]
