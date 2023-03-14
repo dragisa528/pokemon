@@ -39,10 +39,12 @@ RUN useradd -ms /bin/bash --no-user-group -g ${WWWGROUP} -u 1337 api
 COPY composer.lock composer.json /var/www/api/
 COPY . /var/www/api
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
+COPY start-container /usr/local/bin/start-container
+RUN chmod +x /usr/local/bin/start-container
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 
-CMD ["php-fpm"]
+ENTRYPOINT ["start-container"]
+
+# CMD ["php-fpm"]
