@@ -42,9 +42,10 @@ RUN chown -R www-data:www-data \
         /var/www/api/bootstrap/cache
 
 # Assign writing permissions to logs and framework directories
-RUN chmod 775 /var/www/api/storage/logs \
+RUN chmod 777 /var/www/api/storage/logs \
         /var/www/api/storage/framework/sessions \
         /var/www/api/storage/framework/views
+
 # Change current user to api
 # USER www
 
