@@ -44,9 +44,8 @@ RUN chown -R www-data:www-data \
         /var/www/api/bootstrap/cache
 
 # Assign writing permissions to logs and framework directories
-RUN chmod 777 /var/www/api/storage/logs \
-        /var/www/api/storage/framework/sessions \
-        /var/www/api/storage/framework/views
+RUN chmod -R 775 /var/www/api/storage \
+         /var/www/api/bootstrap/cache
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
