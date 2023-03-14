@@ -1,10 +1,7 @@
 FROM php:8.2-fpm
 
-ARG GID
-ARG UID
-
-# Copy composer.lock and composer.json
-COPY composer.lock composer.json /var/www/api/
+ARG WWWGROUP
+ARG WWWUSER
 
 # Set working directory
 WORKDIR /var/www/api
@@ -37,32 +34,19 @@ RUN docker-php-ext-install gd
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Create a new group called www with the group ID(GID) argument
-RUN groupadd -g 1000 apigroup
-
-# Create a user called api with user ID (UID) argument 
-RUN useradd -u 1000 api
-
-# And the newly created api user to new group created above (www)
-RUN usermod -a -G 1000 api
-
-# We also add the api (GID) to a group called www-data
-# RUN usermod -a -G www-data 1000 
-
-# Copy existing application directory permissions
+COPY composer.lock composer.json /var/www/api/
 COPY . /var/www/api
 
-RUN chown -R apigroup:apigroup \
+RUN chown -R www-data:www-data \
         /var/www/api/storage \
         /var/www/api/bootstrap/cache
 
 # Assign writing permissions to logs and framework directories
-RUN chmod 777 /var/www/api/storage/logs \
+RUN chmod 775 /var/www/api/storage/logs \
         /var/www/api/storage/framework/sessions \
         /var/www/api/storage/framework/views
-
 # Change current user to api
-USER api
+# USER www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
