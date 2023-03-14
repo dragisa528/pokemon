@@ -40,13 +40,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY composer.lock composer.json /var/www/api/
 COPY . /var/www/api
 
-RUN chown -R :www-data \
-        /var/www/api/storage \
-        /var/www/api/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/api/storage
+RUN chown -R www-data:www-data /var/www/api/bootstrap/cache
 
-# Assign writing permissions to logs and framework directories
-RUN chmod -R 775 /var/www/api/storage \
-         /var/www/api/bootstrap/cache
+RUN chmod -R 777 /var/www/api/storage
+RUN chmod -R 777 /var/www/api/bootstrap/cache
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
