@@ -34,12 +34,10 @@ RUN docker-php-ext-install gd
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-USER wwwdata
-
 COPY composer.lock composer.json /var/www/api/
 COPY . /var/www/api
 
-RUN chown -R www-data:www-data \
+RUN chown -R :www-data \
         /var/www/api/storage \
         /var/www/api/bootstrap/cache
 
