@@ -1,6 +1,7 @@
 FROM php:8.2-fpm
 
 ARG WWWGROUP
+ARG WWWUSER
 
 # set working directory
 WORKDIR /var/www/api
@@ -34,13 +35,18 @@ RUN docker-php-ext-install gd
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN groupadd --force -g ${WWWGROUP} api
-RUN useradd -ms /bin/bash --no-user-group -g ${WWWGROUP} -u 1337 api
+RUN useradd -ms /bin/bash --no-user-group -g ${WWWGROUP} -u ${WWWUSER} api
 
-COPY composer.lock composer.json /var/www/api/
-COPY . /var/www/api
+# COPY start-container /usr/local/bin/start-container
+# RUN chmod +x /usr/local/bin/start-container
 
-COPY start-container /usr/local/bin/start-container
-RUN chmod +x /usr/local/bin/start-container
+# RUN chown www-data:www-data /var/www/api; \
+# 	chmod 777 /var/www/api
+
+USER api
+
+COPY --chown=api:www-data composer.lock composer.json /var/www/api/
+COPY --chown=api:www-data . /var/www/api
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

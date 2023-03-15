@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile
       args:
         WWWGROUP: '${WWWGROUP}'
+        WWWUSER: '${WWWUSER}'
     image: api
     container_name: api
     restart: unless-stopped
