@@ -43,6 +43,8 @@ RUN useradd -ms /bin/bash --no-user-group -g ${WWWGROUP} -u ${WWWUSER} api
 # RUN chown www-data:www-data /var/www/api; \
 # 	chmod 777 /var/www/api
 
+# export HAHA=$(( id -u $USER ) 2>&1)
+
 USER api
 
 COPY --chown=api:www-data composer.lock composer.json /var/www/api/
