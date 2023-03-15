@@ -6,9 +6,8 @@ if [ $USERID -ne 0 ]; then
 	chmod -R 775 /var/www/api/storage /var/www/api/bootstrap/cache
 	echo "changed owner to $USERID"
 fi
-chown -R 0:0 /var/www/api/storage /var/www/api/bootstrap/cache
+
 if [ $USERID -eq 0 ]; then
-	chown -R 0:0 /var/www/api/storage /var/www/api/bootstrap/cache
 	chmod -R 777 /var/www/api/storage /var/www/api/bootstrap/cache
 	echo "changed owner to root"
 fi
