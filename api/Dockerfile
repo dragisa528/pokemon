@@ -45,10 +45,8 @@ COPY start-container /usr/local/bin/start-container
 RUN chmod +x /usr/local/bin/start-container
 
 
-USER www-data
-
-COPY --chown=www-data:www-data composer.lock composer.json /var/www/api/
-COPY --chown=www-data:www-data . /var/www/api
+# COPY --chown=www-data:www-data composer.lock composer.json /var/www/api/
+# COPY --chown=www-data:www-data . /var/www/api
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
