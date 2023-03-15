@@ -5,14 +5,14 @@ services:
       context: ./api
       dockerfile: Dockerfile
       args:
-        WWWGROUP: '${WWWGROUP}'
-        WWWUSER: '${WWWUSER}'
+        USERID: ${USERID:-0}
+        GROUPID: ${GROUPID:-0}
     image: api
     container_name: api
     restart: unless-stopped
     tty: true
     environment:
-      WWWUSER: '${WWWUSER}'
+      USERID: ${USERID:-0}
       SERVICE_NAME: api
       SERVICE_TAGS: dev
     working_dir: /var/www/api

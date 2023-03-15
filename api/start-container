@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-if [ ! -z "$WWWUSER" ]; then
-    usermod -u $WWWUSER api
-	chown -R $WWWUSER:www-data /var/www/api/storage /var/www/api/bootstrap/cache
+echo "Running start-container script"
+
+if [ ! -z "$USERID" ]; then
+    usermod -u $USERID www-data
+	chown -R $USERID:www-data /var/www/api/storage /var/www/api/bootstrap/cache
 else
 	chown -R www-data:www-data /var/www/api/storage /var/www/api/bootstrap/cache
 fi
