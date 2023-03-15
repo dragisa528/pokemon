@@ -37,8 +37,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN groupadd --force -g ${WWWGROUP} api
 RUN useradd -ms /bin/bash --no-user-group -g ${WWWGROUP} -u ${WWWUSER} api
 
-# COPY start-container /usr/local/bin/start-container
-# RUN chmod +x /usr/local/bin/start-container
+COPY start-container /usr/local/bin/start-container
+RUN chmod +x /usr/local/bin/start-container
 
 # RUN chown www-data:www-data /var/www/api; \
 # 	chmod 777 /var/www/api
@@ -53,4 +53,4 @@ COPY --chown=api:www-data . /var/www/api
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 
-CMD ["php-fpm"]
+CMD ["start-container"]

@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-chmod -R 775 /var/www/api/storage /var/www/api/boostrap/cache
-
 if [ ! -z "$WWWUSER" ]; then
     usermod -u $WWWUSER api
-	chown -R $WWWUSER:www-data /var/www/api/storage /var/www/api/boostrap/cache
-	echo "chown $WWWUSER:www-data /var/www/api/storage /var/www/api/boostrap/cache"
+	chown -R $WWWUSER:www-data /var/www/api/storage /var/www/api/bootstrap/cache
 else
-	chown -R www-data:www-data /var/www/api/storage /var/www/api/boostrap/cache
-	echo "chown www-data:www-data /var/www/api/storage /var/www/api/boostrap/cache"
+	chown -R www-data:www-data /var/www/api/storage /var/www/api/bootstrap/cache
 fi
 
+chmod -R 775 /var/www/api/storage /var/www/api/bootstrap/cache
+
+exec php-fpm
