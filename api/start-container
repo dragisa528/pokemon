@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-echo "Running start-container script"
-
-if [ ! -z "$USERID" ]; then
+if [ $USERID -ne 0 ]; then
     usermod -u $USERID www-data
 	chown -R $USERID:www-data /var/www/api/storage /var/www/api/bootstrap/cache
-else
-	chown -R www-data:www-data /var/www/api/storage /var/www/api/bootstrap/cache
+	chmod -R 775 /var/www/api/storage /var/www/api/bootstrap/cache
+	echo "changed owner to $USERID"
 fi
-
-chmod -R 775 /var/www/api/storage /var/www/api/bootstrap/cache
+chown -R 0:0 /var/www/api/storage /var/www/api/bootstrap/cache
+if [ $USERID -eq 0 ]; then
+	chown -R 0:0 /var/www/api/storage /var/www/api/bootstrap/cache
+	chmod -R 777 /var/www/api/storage /var/www/api/bootstrap/cache
+	echo "changed owner to root"
+fi
 
 exec php-fpm

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# We will delete and recreate the user/group completely of the base OS
+# This will enable us have control over what user ID and group ID 
+# We recreate the www-data in the base OS with our own known group ID and User ID
+# We use -l flag with useradd this is important to prevent issue where a 
+# high UID value will generate huge log files and freeze your system!
+
+echo "Starting build";
+
+if [ $USERID -ne 0 ] && [ $GROUPID -ne 0 ] ; then
+    userdel -f www-data
+
+    if getent group www-data ; then 
+        groupdel www-data
+    fi
+
+    groupadd -g $GROUPID www-data
+
+    useradd -l -u $USERID -g www-data www-data
+
+    install -d -m 0775 -o www-data -g www-data /home/www-data
+
+    chown --changes --silent --no-dereference --recursive --from=33:33 $USERID:$GROUPID /home/www-data 
+    chown --changes --silent --no-dereference --recursive --from=33:33 $USERID:$GROUPID /var/www/api
+fi
