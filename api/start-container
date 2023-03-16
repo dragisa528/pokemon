@@ -12,5 +12,5 @@ if [ $USERID -eq 0 ]; then
 	echo "running as root"
 fi
 
-echp "Starting PHP FPM"
+echo "Starting PHP FPM"
 exec php-fpm
