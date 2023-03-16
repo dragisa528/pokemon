@@ -39,6 +39,11 @@ This runs the webs server for serving the frontend and backend pages
 ```
 docker compose up -d
 ```
+If you experience permission issues, please try, which will try to build the api image with your user id and group id
+
+```
+GROUPID=$(id -g ${USER}) USERID=$(id -u ${USER}) docker compose build --no-cache && docker compose up -d
+```
 
 NB: This will try to run the application on the following ports
 - 80    : Web server
