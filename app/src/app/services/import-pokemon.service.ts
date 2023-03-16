@@ -8,13 +8,16 @@ import { Observable } from 'rxjs';
 
 export class ImportPokemonService 
 {
+
+  private baseUrl = 'http://api.pokemon.test/api/pokemons';
+
   constructor(private http: HttpClient) { }
 
   getBaseUrl() {
-    const url = new URL(window.location.href.split('?')[0]);
+    const url = new URL(window.location.href.split('?')[0]); 
     url.port = '';
     const baseUrl = url.toString();
-
+console.log(baseUrl);
     if(baseUrl == 'http://localhost/')  {
       return 'http://127.0.0.1/api/pokemons';
     }
