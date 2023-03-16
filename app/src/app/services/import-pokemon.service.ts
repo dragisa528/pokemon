@@ -8,9 +8,19 @@ import { Observable } from 'rxjs';
 
 export class ImportPokemonService 
 {
-  private baseUrl = 'http://api.pokemon.test/api/pokemons';
-
   constructor(private http: HttpClient) { }
+
+  getBaseUrl() {
+    const url = new URL(window.location.href.split('?')[0]);
+    url.port = '';
+    const baseUrl = url.toString();
+
+    if(baseUrl == 'http://localhost/')  {
+      return 'http://127.0.0.1/api/pokemons';
+    }
+
+    return baseUrl + 'api/pokemons';
+  }
 
   /**
    * Import pokemons from CSV
@@ -20,7 +30,7 @@ export class ImportPokemonService
    */
   import(pokemons: File): Observable<HttpEvent<any>> 
   {
-    const url      :string   = `${this.baseUrl}/import`;
+    const url      :string   = this.getBaseUrl() + 'import'; 
     const formData :FormData = new FormData();
 
     formData.append('pokemons', pokemons);
@@ -39,7 +49,7 @@ export class ImportPokemonService
    * @returns 
    */
   getPokemons(url?:string): Observable<any> {
-    url = url ?? this.baseUrl;
+    url = url ?? this.getBaseUrl();
     return this.http.get(url);
   }
 }
