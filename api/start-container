@@ -2,14 +2,15 @@
 
 if [ $USERID -ne 0 ]; then
     usermod -u $USERID www-data
-	chown -R $USERID:www-data /var/www/api/storage /var/www/api/bootstrap/cache
+	chown -R www-data:www-data /var/www/api/storage /var/www/api/bootstrap/cache
 	chmod -R 775 /var/www/api/storage /var/www/api/bootstrap/cache
-	echo "changed owner to $USERID"
+	echo "running as www-data user id: $USERID and group id: $GROUPID"
 fi
 
 if [ $USERID -eq 0 ]; then
 	chmod -R 777 /var/www/api/storage /var/www/api/bootstrap/cache
-	echo "changed owner to root"
+	echo "running as root"
 fi
 
+echp "Starting PHP FPM"
 exec php-fpm

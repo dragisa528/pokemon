@@ -6,9 +6,7 @@
 # We use -l flag with useradd this is important to prevent issue where a 
 # high UID value will generate huge log files and freeze your system!
 
-echo "Starting build";
-
-if [ $USERID -ne 0 ] && [ $GROUPID -ne 0 ] ; then
+if [ $USERID -ne 0 -a $GROUPID -ne 0 ] ; then
     userdel -f www-data
 
     if getent group www-data ; then 

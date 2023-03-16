@@ -38,15 +38,13 @@ RUN docker-php-ext-install gd
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# RUN groupadd --force -g ${GROUPID} api
-# RUN useradd -ms /bin/bash --no-user-group -g ${GROUPID} -u ${USERID} api
-
 COPY start-container /usr/local/bin/start-container
 RUN chmod +x /usr/local/bin/start-container
 
+USER ${USERID}
 
-# COPY --chown=www-data:www-data composer.lock composer.json /var/www/api/
-# COPY --chown=www-data:www-data . /var/www/api
+COPY --chown=${USERID}:${GROUPID} composer.lock composer.json /var/www/api/
+COPY --chown=${USERID}:${GROUPID} . /var/www/api
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
