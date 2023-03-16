@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# We will delete and recreate the user/group completely of the base OS
+# We will delete and recreate the user/group of the base os completely
 # This will enable us have control over what user ID and group ID 
 # We recreate the www-data in the base OS with our own known group ID and User ID
 # We use -l flag with useradd this is important to prevent issue where a 
