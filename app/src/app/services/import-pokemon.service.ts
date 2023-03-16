@@ -33,7 +33,7 @@ console.log(baseUrl);
    */
   import(pokemons: File): Observable<HttpEvent<any>> 
   {
-    const url      :string   = this.getBaseUrl() + 'import'; 
+    const url      :string   = this.getBaseUrl() + '/import'; 
     const formData :FormData = new FormData();
 
     formData.append('pokemons', pokemons);
